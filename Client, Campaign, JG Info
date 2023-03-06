@@ -1,3 +1,8 @@
-select distinct id,name from idp.modelled.campaign_management_clients;
-select distinct id,name from idp.modelled.campaign_management_campaigns;
+Client ID, Client Name, Client Level Budget, Client Budget Frequency :  
+select distinct id,name,budget_value,budget_cap_frequency from idp.modelled.campaign_management_clients;
+Campaign ID, Campaign Name, Campaign Level Budget, Campaign Budget Frequency :  
+select distinct id,name,budget_value,budget_cap_frequency from idp.modelled.campaign_management_campaigns;
+JG ID, JG Name : 
 select distinct id,name from idp.modelled.campaign_management_jobgroups;
+Client ID, JG ID, Cap Type (Applies/Clicks/Spend), Entity Type(Job level and JG Level), Budget Value, Budget Cap Frequency : 
+select distinct client_id,jobgroup_id,cap_type,entity_type,value,cap_frequency from idp.modelled.campaign_management_jobgroup_caps
