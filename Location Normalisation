@@ -1,0 +1,1 @@
+select job_city,job_state,job_country,any_value(distinct joveo_city) joveo_city, any_value(distinct joveo_state) joveo_state,any_value(distinct joveo_country) joveo_country  from jobs.intermediate.location_hash_lookup where norm = TRUE and is_valid = TRUE group by job_city,job_state,job_country
