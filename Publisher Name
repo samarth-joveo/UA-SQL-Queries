@@ -1,0 +1,1 @@
+select distinct agency_id,publisher_id,name from idp.modelled.publisher_management_publishers
