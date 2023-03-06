@@ -1,0 +1,3 @@
+select distinct id,name from idp.modelled.campaign_management_clients;
+select distinct id,name from idp.modelled.campaign_management_campaigns;
+select distinct id,name from idp.modelled.campaign_management_jobgroups;
