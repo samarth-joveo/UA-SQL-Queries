@@ -1,1 +1,4 @@
-select distinct agency_id,publisher_id,name from idp.modelled.publisher_management_publishers
+with pubs as (select distinct agency_id,publisher_id from tracking.modelled.view_grouped_tracking_event where should_contribute_to_joveo_stats = True and event_publisher_date >= date('2023-01-01')),
+pub_name as (select distinct agency_id,publisher_id,name from idp.modelled.publisher_management_publishers),
+pub_name_original as (select publisher_id, any_value(name) name from idp.modelled.publisher_management_publishers where agency_id is null group by publisher_id)
+select pubs.agency_id,pubs.publisher_id,pub_name.name, coalesce(pub_name.name,pub_name_original.name) from pubs left join pub_name on pubs.agency_id = pub_name.agency_id and pubs.publisher_id = pub_name.publisher_id left join pub_name_original on pub_name_original.publisher_id = pubs.publisher_id;
