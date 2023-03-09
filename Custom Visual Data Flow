@@ -1,10 +1,10 @@
 #Single Line Item
 data = [
-  [{ 'clicks' : { 'value' : 0 }, 'applies' : { 'value' : 10 }, 'spend' : {'value' : 30 } }]
+  { 'clicks' : { 'value' : 0 }, 'applies' : { 'value' : 10 }, 'spend' : {'value' : 30 } }
 ]
 #Multiple Line Item : 
 data = [
-  [{ 'date':{ 'value' : '2023-01-01' } , 'spend' : { 'value' : 100 } }],
-  [{ 'date':{ 'value' : '2023-01-02' } , 'spend' : { 'value' : 200 } }],
-  [{ 'date':{ 'value' : '2023-01-03' } , 'spend' : { 'value' : 300 } }]
+  { 'date':{ 'value' : '2023-01-01' } , 'spend' : { 'value' : 100 } },
+  { 'date':{ 'value' : '2023-01-02' } , 'spend' : { 'value' : 200 } },
+  { 'date':{ 'value' : '2023-01-03' } , 'spend' : { 'value' : 300 } }
 ]
