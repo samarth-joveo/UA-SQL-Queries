@@ -41,7 +41,7 @@ GROUP  BY publisher_name,event_publisher_date,job_state,job_country;
 
 
 stats_qurey with Date Split : 
-select event_publisher_date,
+select event_publisher_date,dayname(event_publisher_date),
 case 
 when to_time(event_timestamp) <= time_from_parts(3,0,0) then '00:00 - 03:00'
 when to_time(event_timestamp) > time_from_parts(3,0,0) and to_time(event_timestamp) <= time_from_parts(6,0,0) then '03:00 - 06:00'
@@ -51,6 +51,7 @@ when to_time(event_timestamp) > time_from_parts(12,0,0) and to_time(event_timest
 when to_time(event_timestamp) > time_from_parts(15,0,0) and to_time(event_timestamp) <= time_from_parts(18,0,0) then '15:00 - 18:00'
 when to_time(event_timestamp) > time_from_parts(18,0,0) and to_time(event_timestamp) <= time_from_parts(21,0,0) then '18:00 - 21:00'
 else '21:00 - 24:00'
+
 end time_category,
 sum(case
     when is_valid = true then (event_spend * (1E0 / (1E0 - (publisher_entity_markdown / 100))) * (1E0 + (agency_markup / 100)) * (1E0 + (effective_cd_markup / 100)) * d_logic_ratio)
