@@ -1,39 +1,15 @@
-select publisher_name,event_publisher_date,job_state,job_country,
-sum(case
-    when (
-      event_type= 'CONVERSION'
-      and conversion_type in ('CUSTOM_CONVERSION_1','SHORTLIST')    ) then event_count
-    else 0
-  end) as "Background_check",
-     sum(case
-     when (
-       event_type = 'CLICK'
-       and is_valid = 1 
-     ) then event_count
-     else 0
-   end) as CLICKS,
-   sum(case
-     when (
-       event_type = 'CONVERSION'
-       and conversion_type = 'APPLY'
-     ) then event_count
-     else 0
-   end) as APPLIES,
-       sum(case
-     when (
-       event_type = 'CONVERSION'
-       and conversion_type = 'HIRE'
-     ) then event_count
-     else 0
-   end) as HIRES,
-   
-    sum((event_spend * d_logic_ratio * (1E0 / (1E0 - (publisher_entity_markdown / 100))) * (1E0 + (agency_markup / 100)) * (1E0 + (effective_cd_markup / 100))))
+select client_id,campaign_id,job_group_id,event_publisher_date,
+     sum(clicks) as CLICKS,
+   sum(applies) as APPLIES,
+   sum(apply_starts) as Apply_Starts,
+       sum(hires) as HIRES,
+    sum(cd_spend)
    as CD_SPEND
-FROM   tracking.modelled.VIEW_TRACKING_EVENT
+FROM   tracking.modelled.view_grouped_combined_events
        WHERE  agency_id='uber'
-       and event_publisher_date >= date('2023-01-01') and event_publisher_date <= date('2023-03-01')
+       and event_publisher_date >= date('2023-01-01') and event_publisher_date <= date('2023-02-01')
        and should_contribute_to_joveo_stats = TRUE
-GROUP  BY publisher_name,event_publisher_date,job_state,job_country;
+GROUP  BY client_id,campaign_id,job_group_id,event_publisher_date;
 
 
 
