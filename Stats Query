@@ -1,3 +1,4 @@
+#Basic Stats Query : 
 select client_id,campaign_id,job_group_id,event_publisher_date,
      sum(clicks) as CLICKS,
    sum(applies) as APPLIES,
@@ -11,12 +12,47 @@ FROM   tracking.modelled.view_grouped_combined_events
        and should_contribute_to_joveo_stats = TRUE
 GROUP  BY client_id,campaign_id,job_group_id,event_publisher_date;
 
+#Location Split : 
+select agency_id,client_id,campaign_id,job_group_id,publisher_id,event_publisher_date,job_state,job_country,
+   sum(case
+    when is_valid = true then (event_spend * (1E0 / (1E0 - (publisher_entity_markdown / 100))) * (1E0 + (agency_markup / 100)) * (1E0 + (effective_cd_markup / 100)) * d_logic_ratio)
+    else 0E0
+  end) as CDSpend,
+  sum( case when (
+        event_type = 'CLICK'
+        and is_valid = true
+      ) then event_count
+      else 0
+    end) as Clicks,
+    sum(case
+      when (
+        event_type = 'CONVERSION'
+        and conversion_type = 'APPLY'
+      ) then event_count
+      else 0
+    end) as Applies,
+    sum(case
+      when (
+        event_type = 'CONVERSION'
+        and conversion_type = 'APPLY_START'
+      ) then event_count
+      else 0
+    end) as Apply_Starts,
+    sum(case
+      when (
+        event_type = 'CONVERSION'
+        and conversion_type = 'HIRE'
+      ) then event_count
+      else 0
+    end) as Hires
+from tracking.modelled.view_tracking_event
+where agency_id = 'uber' and date(event_publisher_date) >=  date('2023-01-01')
+and date(event_publisher_date) <=  current_date
+and should_contribute_to_joveo_stats = TRUE
+group by agency_id,client_id,campaign_id,job_group_id,publisher_id,event_publisher_date,job_state,job_country
 
 
-
-
-
-stats_qurey with Date Split : 
+#Stats Qurey with Date Split : 
 select event_publisher_date,dayname(event_publisher_date),
 case 
 when to_time(event_timestamp) <= time_from_parts(3,0,0) then '00:00 - 03:00'
